@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8
+    ports:
+      - 3305:3306
+    volumes:
+      - ~/apps/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - discord
+
+networks:
+  discord:

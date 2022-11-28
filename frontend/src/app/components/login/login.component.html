@@ -1,0 +1,67 @@
+<div class="page" [ngSwitch]="page">
+    <form *ngSwitchCase="pageType.login" class="card" #loginForm="ngForm" (submit)="login(loginForm)">
+        <h2 class="pageName">Login page</h2>
+        <div [style.visibility]="error ? 'visible' : 'hidden'" class="nameRequired error">Login or password incorrect</div>
+
+        <label class="label">Username</label>
+        <input class="input" ngModel name="username" #username="ngModel" required>
+        <div [style.visibility]="username.invalid && username.dirty ? 'visible' : 'hidden'" class="nameRequired">Username is required</div>
+
+        <label class="label">Password</label>
+        <input class="input passwordInput" ngModel name="password" #password="ngModel" type="password" required>
+        <div [style.visibility]="password.invalid && password.dirty ? 'visible' : 'hidden'" class="nameRequired">
+            Password is required</div>
+
+        <button class="submitButton" [disabled]="loginForm.invalid" type="submit">Login</button>
+        <div class="noAccount">Don't you have an account? <a (click)="showRegister()">Sign up</a></div>
+    </form>
+    <form *ngSwitchCase="pageType.register" class="card" #signUpForm="ngForm" (submit)="signUp(signUpForm)">
+        <h2 class="pageName">Sign up page</h2>
+
+        <div [hidden]="!usernameTaken" class="nameRequired">Username already taken</div>
+        <label class="label">Username</label>
+        <input class="input" ngModel name="username" #username="ngModel" required minlength="4" pattern="\S+">
+        <div [style.visibility]="username.invalid && username.dirty ? 'visible' : 'hidden'" class="nameRequired">Username is required</div>
+        
+        <div [hidden]="!emailTaken" class="nameRequired">Email already taken</div>
+        <label class="label">Email</label>
+        <input email class="input" ngModel name="email" #email="ngModel" required>
+        <div [style.visibility]="email.invalid && email.dirty ? 'visible' : 'hidden'" class="nameRequired">Email must be valid</div>
+
+        <label class="label">Password</label>
+        <input class="input" ngModel name="password" #password="ngModel" type="password" required minlength="4" pattern="\S+">
+        <div [style.visibility]="password.invalid && password.dirty ? 'visible' : 'hidden'" class="nameRequired">
+            Password is required</div>
+
+        <button class="submitButton" [disabled]="signUpForm.invalid" type="submit">Sign up</button>
+        <div class="noAccount">Do you have an account? <a (click)="showLogin()">Login</a></div>
+    </form>
+    <div *ngSwitchCase="pageType.successRegister" class="card">
+        <h2 class="pageName dialog">Successfully registered</h2>
+        <div class="noAccount">We sent email verification to your address. Confirm it to be able to login.</div>
+        <button class="submitButton" (click)="showLogin()">Login</button>
+    </div>
+    <div *ngSwitchCase="pageType.emailConfirmed" class="card">
+        <h2 class="pageName dialog">Email confirmed</h2>
+        <div class="noAccount">Email successfully confirmed. You can login now.</div>
+        <button class="submitButton" (click)="showLogin()">Login</button>
+    </div>
+    <div *ngSwitchCase="pageType.userNotEnabled" class="card">
+        <h2 class="pageName dialog">User not activated</h2>
+        <div class="noAccount">You have not confirmed your email. Click in the link sent to your email address to
+            activate your account.</div>
+        <button class="submitButton" (click)="showLogin()">Login</button>
+        <div class="resendAlert">Don't you recived verification email click here to resend it.</div>
+        <button class="submitButton resendButton" (click)="resendToken()">Resend verification email</button>
+    </div>
+    <form *ngSwitchCase="pageType.error" class="card" #resendForm="ngForm" (submit)="resendEmail(resendForm)">
+        <h2 class="pageName dialog">Something went wrong</h2>
+        <div class="noAccount">Probably your verification email has expired. Enter your email address to resend it.</div>
+        <label class="label">Email</label>
+        <input class="input" ngModel name="email" email required #email="ngModel">
+        <button class="submitButton resendButton" [disabled]="resendForm.invalid">Resend verification email</button>
+        <button class="submitButton" type="button" (click)="showLogin()">Login</button>
+    </form>
+</div>
+
+<div id="toast">Verification email resent</div>

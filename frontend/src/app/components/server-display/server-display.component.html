@@ -1,0 +1,65 @@
+<div class="display" *ngIf="displayServer">
+    <div class="channels">
+        <div *ngIf="displayServer" class="serverName">{{displayServer.name}}<i (click)="openServerSettings()" class="fa fa-cog" aria-hidden="true"></i></div>
+        <div class="channelGroups" *ngIf="displayServer">
+            <div class="textChannels">Text Channels
+                <i (click)="creatingChannel = true" class="fa fa-plus" aria-hidden="true"></i>
+            </div>
+            <ul class="channelList">
+                <li [ngClass]="textChannel == displayChannel ? 'chosenChannel' : 'textChannelName'" 
+                (click)="showChannel(textChannel)" *ngFor="let textChannel of channels">
+                    <i class="fa fa-hashtag" aria-hidden="true"></i>{{textChannel.name}}
+                    <i *ngIf="displayServer.owner === currentUser.username" (click)="openChannelSettings()" class="fa fa-cog" aria-hidden="true"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="userSettings">
+            <img class="avatar" [src]="getImage()">
+            <div class="accountUsername">{{currentUser.username}}</div>
+            <i (click)="openUserSettings()" class="fa fa-cog" aria-hidden="true"></i>
+        </div>
+    </div>
+    
+    <div class="channel" *ngIf="displayChannel; else no_channels">
+        <div class="channelName"># {{displayChannel.name}}</div>
+        <app-chat [displayChannel]="displayChannel" [avatarCache]="avatarCache"></app-chat>
+    </div>
+    <ng-template #no_channels>
+        <div class="no_channels">
+            Brak kanałów :(
+        </div>
+    </ng-template>
+
+    <ul class="users">
+        <p>User list</p>
+        <li class="user" *ngFor="let user of users">
+            <img class="avatar" [src]="getAvatar(user)">
+            <div class="username">{{user.username}}</div>
+        </li>
+    </ul>
+
+</div>
+
+<!-- Forms -->
+
+<div *ngIf="creatingChannel" class="mask" (click)="creatingChannel=false"></div>
+
+<div class="channelForm" *ngIf="creatingChannel">
+    <h2 class="createName">Create channel<i (click)="creatingChannel=false" class="fa fa-times" aria-hidden="true"></i></h2>
+    <form class="channelFormInput" #addForm="ngForm" (ngSubmit)="createTextChannel(addForm)">
+        <label class="channelFormName" pattern=".*\S+.*" for="name">Channel name</label>
+        <input class="inputChannelName" ngModel name="name" id="name" placeholder="channel-name" required>
+        <div class="channelFormButtons">
+            <button class="cancelButton" type="button" (click)="creatingChannel=false">Cancel</button>
+            <button class="submitButton" [disabled]="addForm.invalid" type="submit">Create channel</button>
+        </div>
+    </form>
+</div>
+
+<!-- Settings -->
+
+<ng-container [ngSwitch]="currentSetting">
+    <app-settings *ngSwitchCase="settingsType.server" (closeSettings)="closeSettings($event)" [server]="displayServer" [users]="users" [owner]="displayServer.owner === currentUser.username"></app-settings>
+    <app-settings *ngSwitchCase="settingsType.channel" (closeSettings)="closeSettings($event)" [channel]="displayChannel" [owner]="displayServer.owner === currentUser.username"></app-settings>
+    <app-settings *ngSwitchCase="settingsType.user" (closeSettings)="closeSettings($event)" [user]="currentUser"></app-settings>
+</ng-container>

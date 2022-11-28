@@ -1,0 +1,177 @@
+<!-- Server settigns -->
+<div class="settings" *ngIf="server">
+    <ul class="settingList">
+        <div class="settingTitle">{{server.name}}</div>
+        <li *ngIf="owner" [ngClass]="chosenSetting === 0 ? 'chosen' : ''" class="setting" (click)="showSetting(0)">Overview</li>
+        <li [ngClass]="chosenSetting === 1 ? 'chosen' : ''" class="setting" (click)="showSetting(1)">Invite people</li>
+        <li *ngIf="owner" [ngClass]="chosenSetting === 2 ? 'chosen' : ''" class="setting" (click)="showSetting(2)">User list</li>
+        <li *ngIf="owner" class="setting" (click)="confirmation=true">Delete Server</li>
+        <li *ngIf="!owner" class="setting" (click)="confirmation=true">Leave Server</li>
+    </ul>
+    <div *ngIf="chosenSetting == 0" class="settingDisplay">
+        <div class="title">Overview</div>
+        <form class="serverForm" #editForm="ngForm" (ngSubmit)="editServer(editForm)">
+            <div class="input">
+                <div class="upload">
+                    <label>
+                        <img *ngIf="showLogo" class="logo" [src]="getImage()">
+                        <div *ngIf="!showLogo" class="outsideLogo" #custom_logo><div class="server">{{server.name}}</div></div>
+                        <input type="file" ngModel name="logo" style="display: none" accept=".png,.jpg,.jpeg" (change)="uploadLogo($event)">
+                    </label>
+                </div>
+                <button type="button" *ngIf="showLogo" (click)="deleteLogo()" class="deleteLogo">Delete</button>
+                <div class="nameContainer">
+                    <label class="formName" for="name">Server name</label>
+                    <input class="inputName" ngModel="{{server.name}}" name="name" id="name" #name="ngModel" placeholder="server-name" required>
+                    <div *ngIf="name.invalid" class="nameRequired">Server name is required</div>
+                </div>
+            </div>
+            <div class="formButtons" *ngIf="editForm.dirty || showSubmit">
+                <div class="saveAlert">You have unsaved changes</div>
+                <button class="cancelButton" type="button" (click)="restoreForm(editForm)">Restore</button>
+                <button class="submitButton" [disabled]="editForm.invalid" type="submit">Save changes</button>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="chosenSetting == 1" class="settingDisplay">
+        <div class="title">Inivte people</div>
+        <div class="formName">Send someone this link to invite them to {{server.name}}</div>
+        <div class="row" style="padding-left: 0;">
+            <div class="invite">
+                <div class="inputName">{{inviteToken!}}</div>
+            </div>
+            <button class="submitButton" (click)="copyToClipboad()">Copy</button>
+        </div>
+    </div>
+    <div *ngIf="chosenSetting == 2" class="settingDisplay">
+        <div class="title">User list</div>
+        <div class="formName bottom">Chose who you want to ban.</div>
+        <div class="user" [class.firstUser]="isFirst" *ngFor="let u of users; first as isFirst">
+            <img class="avatar" [src]="'data:image/jpeg;base64,' + u.avatar">
+            <div class="username">{{u.username}}</div>
+            <button class="deleteButton ban" (click)="banUser(u)" type="submit">Ban</button>
+        </div>
+    </div>
+    <div class="close">
+        <i (click)="closeWithoutUpdate()" class="fa fa-times" aria-hidden="true"></i>
+        <div>ESC</div>
+    </div>
+</div>
+
+<!-- Channel settigns -->
+
+<div class="settings" *ngIf="channel">
+    <ul class="settingList">
+        <div class="settingTitle">{{channel.name}}</div>
+        <li [ngClass]="chosenSetting === 0 ? 'chosen' : ''" class="setting">Overview</li>
+        <li class="setting" (click)="confirmation=true">Delete channel</li>
+    </ul>
+    <div class="settingDisplay">
+        <div class="title">Overview</div>
+        <form class="channelForm" #editForm="ngForm" (ngSubmit)="editChannel(editForm)">
+            <div class="nameContainer channelNameContainer">
+                <label class="formName" for="name">Channel name</label>
+                <input class="inputName" ngModel="{{channel.name}}" name="name" id="name" #name="ngModel" placeholder="channel-name" required>
+                <div *ngIf="name.invalid" class="nameRequired">Channel name is required</div>
+            </div>
+            <div class="formButtons" *ngIf="editForm.dirty">
+                <div class="saveAlert">You have unsaved changes</div>
+                <button class="cancelButton" type="button" (click)="restoreChannelForm(editForm)">Restore</button>
+                <button class="submitButton" [disabled]="editForm.invalid" type="submit">Save changes</button>
+            </div>
+        </form>
+    </div>
+    <div class="close">
+        <i (click)="closeWithoutUpdate()" class="fa fa-times" aria-hidden="true"></i>
+        <div>ESC</div>
+    </div>
+</div>
+
+<!-- User settings -->
+
+<div class="settings" *ngIf="user">
+    <ul class="settingList">
+        <div class="settingTitle">User settings</div>
+        <li [ngClass]="chosenSetting === 0 ? 'chosen' : ''" class="setting">Account</li>
+        <li class="setting" (click)="logOut()">Logout
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </li> 
+    </ul>
+    <div class="settingDisplay displayUserSettings">
+        <div class="title">Account</div>
+        <div class="uploadAvatar">
+            <label>
+                <img class="logo" [src]="getAvatar()">
+                <input type="file" ngModel name="logo" style="display: none" accept=".png,.jpg,.jpeg" (change)="uploadAvatar($event)">
+            </label>
+            <button type="button" *ngIf="user.avatarSet" (click)="deleteAvatar()" class="deleteLogo">Delete</button>
+        </div>
+        <div class="userSettings">
+            <form class="row" #usernameForm="ngForm" (ngSubmit)="saveUsername(usernameForm)">
+                <div class="property">
+                    <label class="formName" for="name">Username</label>
+                    <div *ngIf="!showEditUsername" class="value">{{user.username}}</div>
+                    <input *ngIf="showEditUsername" class="inputName" ngModel="{{user.username}}" name="username" required>
+                </div>
+                <button *ngIf="!showEditUsername" type="button" (click)="editUsername()" class="editButton">Edit</button>
+                <button *ngIf="showEditUsername" [disabled]="usernameForm.invalid" class="submitButton">Save</button>
+            </form>
+            <form class="row" #emailForm="ngForm" (ngSubmit)="saveEmail(emailForm)">
+                <div class="property">
+                    <div class="innerRow">
+                        <label class="formName" for="name">Email</label><p class="emailAlert">(after this action you will be logout until email verificaion)</p>
+                    </div>
+                    <div *ngIf="!showEditEmail" class="value">{{user.email}}</div>
+                    <input *ngIf="showEditEmail" email class="inputName" ngModel="{{user.email}}" name="email" required>
+                </div>
+                <button *ngIf="!showEditEmail" type="button" (click)="editEmail()" class="editButton">Edit</button>
+                <button *ngIf="showEditEmail" [disabled]="emailForm.invalid" class="submitButton">Save</button>
+            </form>
+            <form class="row" #passwordForm="ngForm" (ngSubmit)="savePassword(passwordForm)">
+                <div class="property">
+                    <label class="formName" for="name">Password</label>
+                    <input *ngIf="showEditPassword" type="password" class="inputName" ngModel name="password" required>
+                </div>
+                <button *ngIf="!showEditPassword" type="button" (click)="editPassword()" class="editButton">Edit</button>
+                <button *ngIf="showEditPassword" [disabled]="passwordForm.invalid" class="submitButton">Save</button>
+            </form>
+        </div>
+    </div>
+    <div class="close">
+        <i (click)="closeWithoutUpdate()" class="fa fa-times" aria-hidden="true"></i>
+        <div>ESC</div>
+    </div>
+</div>
+
+<!-- Confirmation -->
+
+<div *ngIf="confirmation" class="mask" (click)="confirmation=false"></div>
+
+<div class="confirmation" *ngIf="server && confirmation">
+    <div *ngIf="owner; then deletion else leave"></div>
+    <ng-template #deletion>
+        <h2 class="deleteName">Delete {{server.name}}?</h2>
+        <div class="alert">Are you sure, you want to delete this server? This action is not recoverable</div>
+        <div class="confirmationButtons">
+            <button class="cancelButton" type="button" (click)="confirmation=false">Cancel</button>
+            <button class="deleteButton" (click)="deleteServer()" type="submit">Delete server</button>
+        </div>
+    </ng-template>
+    <ng-template #leave>
+        <h2 class="deleteName">Leave {{server.name}}?</h2>
+        <div class="alert">Are you sure, you want to leave this server?</div>
+        <div class="confirmationButtons">
+            <button class="cancelButton" type="button" (click)="confirmation=false">Cancel</button>
+            <button class="deleteButton" (click)="leaveServer()" type="submit">Leave server</button>
+        </div>
+    </ng-template>
+</div>
+
+<div class="confirmation" *ngIf="channel !== undefined && confirmation">
+    <h2 class="deleteName">Delete {{channel.name}}?</h2>
+    <div class="alert">Are you sure, you want to delete this channel? This action is not recoverable</div>
+    <div class="confirmationButtons">
+        <button class="cancelButton" type="button" (click)="confirmation=false">Cancel</button>
+        <button class="deleteButton" (click)="deleteChannel()" type="submit">Delete channel</button>
+    </div>
+</div>

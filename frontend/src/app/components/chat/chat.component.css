@@ -1,0 +1,224 @@
+.messages {
+    margin-top: 6px;
+    margin-right: 6px;
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+
+.message {
+    position: relative;
+    display: flex;
+    margin-right: 10px;
+    padding-left: 16px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.messages .message:hover {
+    background-color: #32353B;
+}
+
+.message .input {
+    margin: 0px;
+}
+
+.cancelMessage {
+    color: #CCC1BF;
+    padding: 5px;  
+}
+
+.messageAvatar {
+    border-radius: 50px;
+    margin-right: 15px;
+    height: 48px;
+}
+
+.messageDescription {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.author {
+    color: white;
+    font-size: 20px;
+}
+
+.date {
+    margin-left: 20px;
+    align-self: flex-end;
+    color: #A3A6A3;
+    font-size: small;
+}
+
+.text {
+    overflow-wrap: break-word;
+    color: #CCC1BF;
+    padding-right: 20px;
+}
+
+.editText {
+    overflow-wrap: break-word;
+    color: #CCC1BF;
+}
+
+.editMessage {
+    position: absolute;
+    display: none;
+    border: 1px solid #2C2E33;
+    border-radius: 6px;
+    top: -15px;
+    right: 0px;
+    margin-right: 15px;
+    background-color: #36393F;
+}
+
+.message:hover .editMessage {
+    display: block;
+}
+
+.editMessage:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 20px;
+}
+
+.fa-pencil, .fa-trash {
+    padding: 7px;
+    color: #B9BBBE;
+}
+
+.fa-pencil {
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+}
+
+.fa-trash {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.fa-pencil:hover, .fa-trash:hover {
+    cursor: pointer;
+    background-color: #40444B;
+    color: white;
+}
+
+.input {
+    margin: 20px;
+    margin-top: auto;
+    display: flex;
+    background-color: #40444B;
+    border-radius: 5px;
+    text-overflow: wrap;
+}
+
+.messageInput {
+    font-size: large;
+    line-height: 20px;
+    resize: none;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    flex-grow: 1;
+    padding: 10px;
+    background-color: #40444B;
+    color: #CCC1BF;
+    height: fit-content;
+}
+
+.sendMessage {
+    border-radius: 5px;
+    background-color: #40444B;
+    border: none;
+    color: #CCC1BF;
+    width: 50px;
+}
+
+.fa-paper-plane {
+    font-size: 20px;
+}
+
+.sendMessage:hover {
+    background-color: #5865F2;
+    transition: .3s;
+    cursor: pointer;
+}
+
+/* Confirmation */
+
+.confirmation {
+    width: 30%;
+    border-radius: 20px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index:99;
+    background-color: #36393F;
+}
+
+.deleteName {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+    color: white;
+}
+
+.alert {
+    color: white;
+    font-size: 18px;
+    margin: 20px;
+}
+
+.confirmationButtons {
+    width: 100%;
+    background-color: #2F3136;
+    padding: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cancelButton {
+    background: none;
+    outline: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+.cancelButton:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.deleteButton {
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 10px;
+    border: none;
+    margin-left: 10px;
+    background-color: #D83C3E;
+    color: white;
+}
+
+.deleteButton:hover {
+    cursor: pointer;
+    background-color: #A12D2F;
+    transition: .2s;
+}
+
+.confirmation > .message {
+    border-radius: 6px;
+    padding: 10px;
+    border: 2px solid #2C2E33;
+    margin-left: 10px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 5px 20px;
+}
+
+.mask {
+    z-index: 98;
+    position: fixed;
+    top: 0; bottom: 0; right: 0; left: 0;
+    background: rgba(0,0,0,0.85);
+}

@@ -1,0 +1,289 @@
+.display {
+    display: flex;
+    height: 100%;
+}
+
+.channels {
+    color: #8E9297;
+    height: 100%;
+    width: 20%;
+    background-color: #2F3136;
+    display: flex;
+    flex-direction: column;
+}
+
+.userSettings {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #292B2F;
+}
+
+.serverName {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    color: white;
+    font-size: 15px;
+    padding: 12px;
+    height: 50px;
+    line-height: 25px;
+    border-bottom: #202225 2px solid;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accountUsername {
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.channelGroups {
+    padding: 5px;
+}
+
+.textChannels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 5px;
+    margin-bottom: 3px;
+    font-size: 17px;
+}
+
+.fa-plus {
+    font-size: small;
+}
+
+.fa-plus:hover {
+    cursor: pointer;
+    filter: brightness(150%);
+}
+
+.channelList {
+    list-style-type: none;
+    padding: 4px;
+}
+
+.fa-hashtag {
+    margin-right: 10px;
+}
+
+.textChannelName, .chosenChannel {
+    display: flex;
+    justify-content: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 17px;
+    background-color: #2F3136;
+    border-radius: 4px;
+    padding: 4px;
+    padding-left: 6px;
+    margin-bottom: 3px;
+}
+
+.chosenChannel .fa-cog, .serverName .fa-cog, .userSettings .fa-cog {
+    display: block;
+}
+
+.fa-cog {
+    display: none;
+    color: #8E9297;
+    margin-left: auto;
+}
+
+.userSettings .fa-cog {
+    color: #8E9297;
+    padding: 7px;
+    font-size: 20px;
+}
+
+.userSettings .fa-cog:hover {
+    background-color: #3C3F46;
+    color: #D8D9DA;
+    cursor: pointer;
+}
+
+.fa-cog:hover {
+    cursor: pointer;
+    color: #CCC1BF;
+}
+
+.textChannelName:hover .fa-cog {
+    display: block;
+}
+
+.textChannelName:hover {
+    filter: brightness(130%);
+    cursor: pointer;
+}
+
+.chosenChannel {
+    cursor: pointer;
+    filter: brightness(150%);
+}
+
+.channel {
+    display: flex;
+    flex-direction: column;
+    width: 65%;
+    background-color: #36393F;
+    color: white;
+}
+
+app-chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.channelName {
+    padding: 12px;
+    height: 50px;
+    border-bottom: #2F3136 2px solid;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.no_channels {
+    background-color: #202225;
+    flex-grow: 1;
+    color: #8E9297;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+}
+
+.users {
+    background-color: #2F3136;
+    color: #8E9297;
+    margin-left: auto;
+    width: 15%;
+    padding: 20px;
+    list-style-type: none;
+}
+
+.user {
+    align-items: center;
+    display: flex;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.avatar {
+    border-radius: 50px;
+    margin-right: 10px;
+    height: 32px;
+}
+
+/* Forms */
+
+.channelForm {
+    width: 30%;
+    border-radius: 20px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index:99;
+    background-color: #36393F;
+}
+
+.mask {
+    z-index: 98;
+    position: fixed;
+    top: 0; bottom: 0; right: 0; left: 0;
+    background: rgba(0,0,0,0.85);
+}
+
+.createName {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+    color: white;
+}
+
+.fa-times {
+    color: #8E9297;
+}
+
+.fa-times:hover {
+    color: white;
+    transition: .2s;
+}
+
+.channelFormInput {
+    display: flex;
+    flex-direction: column;
+}
+
+.channelFormName {
+    color: #CCC1BF;
+    margin: 20px;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    font-weight: bold;
+}
+
+.inputChannelName {
+    background-color: #202225;
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    margin: 20px;
+    margin-top: 0px;
+    padding: 10px;
+}
+
+.channelFormButtons {
+    width: 100%;
+    background-color: #2F3136;
+    padding: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cancelButton {
+    background: none;
+    outline: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+.cancelButton:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.submitButton {
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 10px;
+    border: none;
+    margin-left: 10px;
+    background-color: #5865F2;
+    color: white;
+}
+
+.submitButton:disabled {
+    background-color: #4752C4;
+    color: gray;
+}
+
+.submitButton:hover:enabled {
+    cursor: pointer;
+    background-color: #4752C4;
+    transition: .2s;
+}

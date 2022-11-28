@@ -1,0 +1,25 @@
+server:
+  port: 6060
+
+minio:
+  user: admin
+  password: admin1234
+  url: http://localhost:9000
+
+frontend-url: "http://localhost:4200"
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: discord.clone.app@gmail.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
+  config:
+    import: optional:secrets.yaml

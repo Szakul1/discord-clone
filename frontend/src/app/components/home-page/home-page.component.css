@@ -1,0 +1,200 @@
+.server-list {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    color: white;
+    background-color: #202225;
+    float: left;
+    height: 100%;
+    padding: 10px;
+    padding-left: 0px;
+    width: fit-content;
+}
+
+.serverRow {
+    display: flex;
+    justify-content: center;
+}
+
+.chosenMark {
+    visibility: hidden;
+    background-color: white;
+    height: 50px;
+    width: 4px;
+    margin-right: 6px;
+    align-self: center;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.logo, .outsideLogo {
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+.outsideLogo {
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: #36393F;
+}
+
+.server {
+    text-align: center;
+    line-height: 50px;
+    overflow: hidden;
+    font-weight: lighter;
+    font-size: 15px;
+}
+
+.outsideLogo:hover, .logo:hover, .chosen {
+    cursor: pointer;
+    transition: .4s;
+    border-radius: 15px;
+    background-color: #5865F2;
+}
+
+.fa-plus {
+    padding-top: 1px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 25px;
+    color: #3BA55D;
+}
+
+.fa-plus:hover {
+    background-color: #3BA55D;
+    color: white;
+}
+
+.display-server {
+    height: 100%;
+}
+
+/* Forms */
+
+.serverForm {
+    width: 30%;
+    border-radius: 20px;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index:99;
+    background-color: #36393F;
+}
+
+.mask {
+    z-index: 98;
+    position: fixed;
+    top: 0; bottom: 0; right: 0; left: 0;
+    background: rgba(0,0,0,0.85);
+}
+
+.createName {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+    color: white;
+}
+
+.fa-times {
+    color: #8E9297;
+}
+
+.fa-times:hover {
+    color: white;
+    transition: .2s;
+}
+
+.serverFormInput {
+    display: flex;
+    flex-direction: column;
+}
+
+.upload {
+    align-self: center;
+}
+
+.chooseFile {
+    border-radius: 70px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    border: 3px #CCC1BF dashed;
+    width: 100px;
+    height: 100px;
+    color: #CCC1BF;
+    font-weight: bold;
+    font-size: small;
+    cursor: pointer;
+}
+
+.fa-camera {
+    font-size: 50px;
+    margin-bottom: 5px;
+}
+
+.serverFormName {
+    color: #CCC1BF;
+    margin: 20px;
+    margin-bottom: 5px;
+    margin-top: 0px;
+    font-weight: bold;
+}
+
+.inputServerName {
+    background-color: #202225;
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 2px;
+    margin: 20px;
+    margin-top: 0px;
+    padding: 10px;
+}
+
+.serverFormButtons {
+    width: 100%;
+    background-color: #2F3136;
+    padding: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cancelButton {
+    background: none;
+    outline: none;
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+.cancelButton:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.submitButton {
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 10px;
+    border: none;
+    margin-left: 10px;
+    background-color: #5865F2;
+    color: white;
+}
+
+.submitButton:disabled {
+    background-color: #4752C4;
+    color: gray;
+}
+
+.submitButton:hover:enabled {
+    cursor: pointer;
+    background-color: #4752C4;
+    transition: .2s;
+}

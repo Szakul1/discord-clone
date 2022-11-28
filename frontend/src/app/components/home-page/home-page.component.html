@@ -1,0 +1,43 @@
+<div class="server-list">
+    <div *ngFor="let server of servers">
+        <div class="serverRow" (click)="showServer(server)">
+            <div [style.visibility]="displayServer !== server ? 'hidden' : 'visible'" class="chosenMark"></div>
+            <img *ngIf="server.logo !== null" class="logo" [ngClass]="displayServer === server ? 'chosen' : ''" [src]="'data:image/jpeg;base64,' + server.logo">
+            <div *ngIf="server.logo === null" [ngClass]="displayServer === server ? 'chosen' : ''" class="outsideLogo" #custom_logo><div class="server">{{server.name}}</div></div>
+        </div>
+    </div>
+    <div class="serverRow">
+        <div class="chosenMark"></div>
+        <i (click)="isCreating=true" class="fa fa-plus outsideLogo" aria-hidden="true"></i>
+    </div>
+</div>
+
+<div class="display-server">
+    <app-server-display *ngIf="displayServer" (updateServer)="updateServer($event)" [server]="displayServer"></app-server-display>
+</div>
+
+<!-- Forms -->
+
+<div *ngIf="isCreating" class="mask" (click)="resetForm()"></div>
+
+<div class="serverForm" *ngIf="isCreating">
+    <h2 class="createName">Create server<i (click)="resetForm()" class="fa fa-times" aria-hidden="true"></i></h2>
+    <form class="serverFormInput" #addForm="ngForm" (ngSubmit)="create(addForm)">
+        <div class="upload">
+            <label>
+                <div class="chooseFile" *ngIf="logo === undefined">
+                    <i class="fa fa-camera" aria-hidden="true"></i>
+                    UPLOAD
+                </div>
+                <img *ngIf="logo != undefined" class="chooseFile" [src]="getLogo()">
+                <input type="file" ngModel name="logo" style="display: none" accept=".png,.jpg,.jpeg" (change)="uploadLogo($event)">
+            </label>
+        </div>
+        <label class="serverFormName" for="name">Server name</label>
+        <input class="inputServerName" pattern=".*\S+.*" ngModel name="name" id="name" placeholder="server-name" required>
+        <div class="serverFormButtons">
+            <button class="cancelButton" type="button" (click)="resetForm()">Cancel</button>
+            <button class="submitButton" [disabled]="addForm.invalid" type="submit">Create server</button>
+        </div>
+    </form>
+</div>

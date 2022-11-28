@@ -1,0 +1,61 @@
+<ng-container *ngIf="channel">
+    <div class="messages" #messageScroll (scroll)="rememberScroll()">
+        <div class="message" *ngFor="let message of messages" #content>
+            <img class="messageAvatar" [src]="getAvatar(message.author!)">
+            <div style="flex-grow: 1; overflow-x: hidden;">
+                <div class="messageDescription">
+                    <div class="author">{{message.author}}</div>
+                    <div class="date">{{convertDate(message.creationDate!)}}</div>
+                    <div class="date" *ngIf="message.edited">(edited)</div>
+                </div>
+                <div *ngIf="messageToEdit !== message" class="text">{{message.message}}</div>
+                <div class="input" *ngIf="messageToEdit === message" style="margin-right: 10px;">
+                    <textarea
+                    #messageEdit rows="1" maxlength="400" value="{{message.message}}"
+                    oninput='this.style.height = this.scrollHeight + "px"'
+                    (keydown.enter)="editMessage(messageEdit.value)" (keydown.escape)="messageToEdit=undefined"
+                    class="messageInput"></textarea>
+                    <button class="sendMessage" (click)="editMessage(messageEdit.value)">
+                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="cancelMessage" *ngIf="messageToEdit == message">Press Esc to cancel</div>
+            </div>
+            <div class="editMessage" *ngIf="message != messageToEdit">
+                <i class="fa fa-pencil" (click)="prepareEdition(message)" aria-hidden="true"></i>
+                <i class="fa fa-trash" (click)="prepareDeletion(message)" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+    <div class="input">
+        <textarea #messageInput rows="1" maxlength="400" 
+        oninput='this.style.height = this.scrollHeight + "px"'
+        (keydown.enter)="sendMessage(messageInput); false" 
+        class="messageInput" placeholder="Write on {{channel.name}}"></textarea>
+        <button class="sendMessage" (click)="sendMessage(messageInput)">
+            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        </button>
+    </div>
+</ng-container>
+
+<!-- Confirmation -->
+
+<div *ngIf="messageToDelete" class="mask" (click)="messageToDelete=undefined"></div>
+
+<div class="confirmation" *ngIf="messageToDelete">
+    <h2 class="deleteName">Delete message?</h2>
+    <div class="message">
+        <img class="messageAvatar" [src]="getAvatar(messageToDelete!.author!)">
+        <div>
+            <div class="messageDescription">
+                <div class="author">{{messageToDelete!.author!}}</div>
+                <div class="date">{{convertDate(messageToDelete!.creationDate!)}}</div>
+            </div>
+            <div class="text">{{messageToDelete!.message}}</div>
+        </div>
+    </div>
+    <div class="confirmationButtons">
+        <button class="cancelButton" type="button" (click)="messageToDelete=undefined">Cancel</button>
+        <button class="deleteButton" (click)="deleteMessage()" type="submit">Delete server</button>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<div *ngIf="server" class="page" [style.background-image]="getLogo()">
+    <div class="card">
+        <div class="info">You have been invited to </div>
+        <h2 class="pageName">{{server.name}}</h2>
+        <button class="submitButton" (click)="accept()">Accept invitation</button>
+    </div>
+</div>
