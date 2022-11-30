@@ -4,6 +4,7 @@ import {
   Output
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Settings } from 'src/app/enums/settings';
 import { UpdateType } from 'src/app/enums/updateType';
 import { DiscordUser } from 'src/app/interfaces/discordUser';
 import { Server } from 'src/app/interfaces/server';
@@ -11,13 +12,6 @@ import { TextChannel } from 'src/app/interfaces/textChannel';
 import { UpdateDto } from 'src/app/interfaces/update-dto';
 import { TextChannelService } from 'src/app/services/text-channel.service';
 import { UserService } from 'src/app/services/user.service';
-
-enum Settings {
-  server,
-  channel,
-  user,
-  none
-}
 
 @Component({
   selector: 'app-server-display',
@@ -32,27 +26,23 @@ export class ServerDisplayComponent implements OnInit {
     if (newServer)
       this.init();
   };
+  @Input() owner!: boolean;
   
   displayServer!: Server;
   channels: TextChannel[] = [];
   users: DiscordUser[] = [];
   displayChannel?: TextChannel;
-  currentUser!: DiscordUser;
   
   avatarCache: { [key: string]: string } = {};
   creatingChannel: boolean = false;
-  
+
   settingsType = Settings;
   currentSetting: Settings = Settings.none;
 
   constructor(private textChannelService: TextChannelService,
     private userService: UserService) {}
 
-  ngOnInit(): void {
-    this.init();
-    // this.currentUser = this.userService.user!;
-    this.currentUser = JSON.parse(sessionStorage.getItem('user')!);
-  }
+  ngOnInit(): void {}
 
   init() {
     this.channels = [];
@@ -84,8 +74,21 @@ export class ServerDisplayComponent implements OnInit {
     this.displayChannel = channel;
   }
 
+  showFirstChannel() {
+    if (this.channels.length > 0) {
+      this.showChannel(this.channels[0]);
+    }
+  }
+
   getAvatar(user: DiscordUser): string {
     return 'data:image/jpeg;base64,' + user.avatar;
+  }
+
+  private getChannels() {
+    this.textChannelService.getChannels(this.displayServer.id!).subscribe(channels => {
+      this.channels = channels;
+      this.showFirstChannel();
+    });
   }
 
   openServerSettings() {
@@ -94,10 +97,6 @@ export class ServerDisplayComponent implements OnInit {
 
   openChannelSettings() {
     this.currentSetting = Settings.channel;
-  }
-
-  openUserSettings() {
-    this.currentSetting = Settings.user;
   }
 
   closeSettings(updateDto: UpdateDto) {
@@ -110,32 +109,16 @@ export class ServerDisplayComponent implements OnInit {
             this.channels[this.channels.findIndex(c => c.id === channel.id)] = channel;
           } else {
             this.displayChannel = undefined;
+            this.showFirstChannel();
             this.channels.splice(this.channels.findIndex(c => c.id === channel.id), 1);
           }
           break;
         case Settings.server:
           this.updateServer.emit(updateDto);
           break;
-        case Settings.user:
-          // this.currentUser = this.userService.user!;
-          this.currentUser = JSON.parse(sessionStorage.getItem('user')!);
-          break;
       }
     }
     this.currentSetting = Settings.none;
-  }
-
-  getImage() {
-    return 'data:image/jpeg;base64,' + this.currentUser.avatar;
-  }
-
-  private getChannels() {
-    this.textChannelService.getChannels(this.displayServer.id!).subscribe(channels => {
-      this.channels = channels;
-      if (channels.length > 0) {
-        this.showChannel(channels[0]);
-      }
-    });
   }
 
 }

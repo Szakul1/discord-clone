@@ -18,7 +18,7 @@ import { UpdateDto } from 'src/app/interfaces/update-dto';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
-export class SettingsComponent implements OnInit, OnChanges {
+export class SettingsComponent implements OnInit {
   @Input() server?: Server;
   @Input() users?: DiscordUser[];
   @Input() owner: boolean = false;
@@ -45,15 +45,11 @@ export class SettingsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     if (this.server) {
+      if (!this.owner)
+       this.chosenSetting = 1;
       this.inviteToken = `${environment.url}/join?token=${this.server?.inviteToken}`
       if (this.server.logo !== null)
         this.showLogo = true;
-    }
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.server) {
-      this.users?.splice(this.users.findIndex(u => u.username === this.server?.owner), 1);
     }
   }
 

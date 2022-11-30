@@ -15,7 +15,7 @@
                 <div class="upload">
                     <label>
                         <img *ngIf="showLogo" class="logo" [src]="getImage()">
-                        <div *ngIf="!showLogo" class="outsideLogo" #custom_logo><div class="server">{{server.name}}</div></div>
+                        <div *ngIf="!showLogo" class="outsideLogo"><div class="server">{{server.name}}</div></div>
                         <input type="file" ngModel name="logo" style="display: none" accept=".png,.jpg,.jpeg" (change)="uploadLogo($event)">
                     </label>
                 </div>
@@ -33,7 +33,7 @@
             </div>
         </form>
     </div>
-    <div *ngIf="chosenSetting == 1" class="settingDisplay">
+    <div *ngIf="chosenSetting === 1" class="settingDisplay">
         <div class="title">Inivte people</div>
         <div class="formName">Send someone this link to invite them to {{server.name}}</div>
         <div class="row" style="padding-left: 0;">
@@ -43,13 +43,15 @@
             <button class="submitButton" (click)="copyToClipboad()">Copy</button>
         </div>
     </div>
-    <div *ngIf="chosenSetting == 2" class="settingDisplay">
+    <div *ngIf="chosenSetting === 2" class="settingDisplay">
         <div class="title">User list</div>
         <div class="formName bottom">Chose who you want to ban.</div>
-        <div class="user" [class.firstUser]="isFirst" *ngFor="let u of users; first as isFirst">
-            <img class="avatar" [src]="'data:image/jpeg;base64,' + u.avatar">
-            <div class="username">{{u.username}}</div>
-            <button class="deleteButton ban" (click)="banUser(u)" type="submit">Ban</button>
+        <div *ngFor="let u of users">
+            <div *ngIf="u.username !== server.owner" class="user">
+                <img class="avatar" [src]="'data:image/jpeg;base64,' + u.avatar">
+                <div class="username">{{u.username}}</div>
+                <button class="deleteButton ban" (click)="banUser(u)" type="submit">Ban</button>
+            </div>
         </div>
     </div>
     <div class="close">

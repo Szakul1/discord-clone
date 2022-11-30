@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Settings } from 'src/app/enums/settings';
 import { UpdateType } from 'src/app/enums/updateType';
+import { DiscordUser } from 'src/app/interfaces/discordUser';
 import { Server } from 'src/app/interfaces/server';
 import { UpdateDto } from 'src/app/interfaces/update-dto';
 import { ServerService } from 'src/app/services/server.service';
@@ -17,10 +19,16 @@ export class HomePageComponent implements OnInit {
   isCreating: boolean = false;
   logo?: File;
 
+  currentUser!: DiscordUser;
+  settingsType = Settings;
+  currentSetting: Settings = Settings.none;
+
   constructor(private serverService: ServerService, private sanitize: DomSanitizer) {}
 
   ngOnInit(): void {
     this.getUserServers();
+    // this.currentUser = this.userService.user!;
+    this.currentUser = JSON.parse(sessionStorage.getItem('user')!);
   }
 
   getUserServers() {
@@ -77,6 +85,24 @@ export class HomePageComponent implements OnInit {
   resetForm() {
     this.isCreating = false;
     this.logo = undefined;
+  }
+
+  isOwner() {
+    return this.currentUser.username === this.displayServer?.owner;
+  }
+
+  getImage() {
+    return 'data:image/jpeg;base64,' + this.currentUser.avatar;
+  }
+
+  openUserSettings() {
+    this.currentSetting = Settings.user;
+  }
+
+  closeSettings(updateDto: UpdateDto) {
+    // this.currentUser = this.userService.user!;
+    this.currentUser = JSON.parse(sessionStorage.getItem('user')!);
+    this.currentSetting = Settings.none;
   }
   
 }

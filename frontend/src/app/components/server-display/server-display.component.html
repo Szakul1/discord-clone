@@ -3,26 +3,22 @@
         <div *ngIf="displayServer" class="serverName">{{displayServer.name}}<i (click)="openServerSettings()" class="fa fa-cog" aria-hidden="true"></i></div>
         <div class="channelGroups" *ngIf="displayServer">
             <div class="textChannels">Text Channels
-                <i (click)="creatingChannel = true" class="fa fa-plus" aria-hidden="true"></i>
+                <i *ngIf="owner" (click)="creatingChannel = true" class="fa fa-plus" aria-hidden="true"></i>
             </div>
             <ul class="channelList">
                 <li [ngClass]="textChannel == displayChannel ? 'chosenChannel' : 'textChannelName'" 
                 (click)="showChannel(textChannel)" *ngFor="let textChannel of channels">
-                    <i class="fa fa-hashtag" aria-hidden="true"></i>{{textChannel.name}}
-                    <i *ngIf="displayServer.owner === currentUser.username" (click)="openChannelSettings()" class="fa fa-cog" aria-hidden="true"></i>
+                    <i class="fa fa-hashtag" aria-hidden="true"></i>
+                    <div class="textChannelText">{{textChannel.name}}</div>
+                    <i *ngIf="owner" (click)="openChannelSettings()" class="fa fa-cog" aria-hidden="true"></i>
                 </li>
             </ul>
-        </div>
-        <div class="userSettings">
-            <img class="avatar" [src]="getImage()">
-            <div class="accountUsername">{{currentUser.username}}</div>
-            <i (click)="openUserSettings()" class="fa fa-cog" aria-hidden="true"></i>
         </div>
     </div>
     
     <div class="channel" *ngIf="displayChannel; else no_channels">
         <div class="channelName"># {{displayChannel.name}}</div>
-        <app-chat [displayChannel]="displayChannel" [avatarCache]="avatarCache"></app-chat>
+        <app-chat *ngIf="displayChannel" [displayChannel]="displayChannel" [avatarCache]="avatarCache"></app-chat>
     </div>
     <ng-template #no_channels>
         <div class="no_channels">
@@ -59,7 +55,6 @@
 <!-- Settings -->
 
 <ng-container [ngSwitch]="currentSetting">
-    <app-settings *ngSwitchCase="settingsType.server" (closeSettings)="closeSettings($event)" [server]="displayServer" [users]="users" [owner]="displayServer.owner === currentUser.username"></app-settings>
-    <app-settings *ngSwitchCase="settingsType.channel" (closeSettings)="closeSettings($event)" [channel]="displayChannel" [owner]="displayServer.owner === currentUser.username"></app-settings>
-    <app-settings *ngSwitchCase="settingsType.user" (closeSettings)="closeSettings($event)" [user]="currentUser"></app-settings>
+    <app-settings *ngSwitchCase="settingsType.server" (closeSettings)="closeSettings($event)" [server]="displayServer" [users]="users" [owner]="owner"></app-settings>
+    <app-settings *ngSwitchCase="settingsType.channel" (closeSettings)="closeSettings($event)" [channel]="displayChannel" [owner]="owner"></app-settings>
 </ng-container>

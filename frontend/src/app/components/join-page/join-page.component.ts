@@ -26,9 +26,8 @@ export class JoinPageComponent implements OnInit {
   }
 
   accept() {
-    this.serverService.joinServer(this.token!).subscribe(() => {
-      this.router.navigateByUrl('home');
-    })
+    this.serverService.joinServer(this.token!).subscribe(() => this.router.navigateByUrl('home'),
+    error => this.router.navigateByUrl('home'));
   }
 
   getLogo(): string {

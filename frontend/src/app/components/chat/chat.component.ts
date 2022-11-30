@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { DiscordUser } from 'src/app/interfaces/discordUser';
 import { Message } from 'src/app/interfaces/message';
 import { TextChannel } from 'src/app/interfaces/textChannel';
 import { MessageService } from 'src/app/services/message.service';
@@ -30,6 +31,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
   messages: Message[] = [];
   messageToDelete?: Message;
   messageToEdit?: Message;
+  currentUser?: DiscordUser;
 
   webSocket?: WebSocketService;
 
@@ -41,16 +43,19 @@ export class ChatComponent implements OnInit, AfterViewInit {
   constructor(private messageService: MessageService, private userService: UserService) {}
 
   ngOnInit(): void {
+    // this.currentUser = this.userService.user!;
+    this.currentUser = JSON.parse(sessionStorage.getItem('user')!);
   }
 
   ngAfterViewInit(): void {
     let scroll: HTMLElement = this.scroll.nativeElement;
-    this.content.changes.subscribe(() => {
+    this.content.changes.subscribe(change => {
       if (this.autoScroll)
         scroll.scrollTop = scroll.scrollHeight;
       else if (this.scrollPosition) {
         scroll.scrollTop = scroll.scrollHeight - this.scrollPosition;
       }
+      this.rememberScroll();
     });
   }
 
@@ -89,20 +94,11 @@ export class ChatComponent implements OnInit, AfterViewInit {
   }
 
   recieveUpdate(message: Message) {
-    for (var i = 0; i < this.messages.length; i++) {
-      if (this.messages[i].id === message.id) {
-        this.messages[i] = message;
-        break;
-      }
-    }
+    this.messages[(this.messages.findIndex(m => m.id === message.id))] = message;
   }
 
   recieveDelete(messageId: number) {
-    for (var i = 0; i < this.messages.length; i++) {
-      if (this.messages[i].id === messageId) {
-        break;
-      }
-    }
+    this.messages.splice(this.messages.findIndex(m => m.id === messageId), 1);
   }
 
   convertDate(date: Date): string {

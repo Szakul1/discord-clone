@@ -8,7 +8,7 @@
     height: 100%;
     padding: 10px;
     padding-left: 0px;
-    width: fit-content;
+    width: 70px
 }
 
 .serverRow {
@@ -37,6 +37,7 @@
     padding-left: 5px;
     padding-right: 5px;
     background-color: #36393F;
+    overflow: hidden;
 }
 
 .server {
@@ -69,6 +70,51 @@
 
 .display-server {
     height: 100%;
+}
+
+.channels {
+    height: 100%;
+    left: 70px;
+    bottom: 0;
+    position: absolute;
+    width: 14vw;
+    background-color: #2F3136;
+    display: flex;
+    flex-direction: column;
+}
+
+.userSettings {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 8px;
+    background-color: #292B2F;
+}
+
+.avatar {
+    border-radius: 50px;
+    margin-right: 10px;
+    height: 32px;
+}
+
+.accountUsername {
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.fa-cog {
+    color: #8E9297;
+    padding: 7px;
+    font-size: 20px;
+    margin-left: auto;
+}
+
+.fa-cog:hover {
+    background-color: #3C3F46;
+    color: #D8D9DA;
+    cursor: pointer;
 }
 
 /* Forms */

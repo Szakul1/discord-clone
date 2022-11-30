@@ -3,7 +3,7 @@
         <div class="serverRow" (click)="showServer(server)">
             <div [style.visibility]="displayServer !== server ? 'hidden' : 'visible'" class="chosenMark"></div>
             <img *ngIf="server.logo !== null" class="logo" [ngClass]="displayServer === server ? 'chosen' : ''" [src]="'data:image/jpeg;base64,' + server.logo">
-            <div *ngIf="server.logo === null" [ngClass]="displayServer === server ? 'chosen' : ''" class="outsideLogo" #custom_logo><div class="server">{{server.name}}</div></div>
+            <div *ngIf="server.logo === null" [ngClass]="displayServer === server ? 'chosen' : ''" class="outsideLogo"><div class="server">{{server.name}}</div></div>
         </div>
     </div>
     <div class="serverRow">
@@ -12,9 +12,15 @@
     </div>
 </div>
 
-<div class="display-server">
-    <app-server-display *ngIf="displayServer" (updateServer)="updateServer($event)" [server]="displayServer"></app-server-display>
+<div class="channels" [style.height]="displayServer ? 'fit-content' : '100%'">
+    <div class="userSettings">
+        <img class="avatar" [src]="getImage()">
+        <div class="accountUsername">{{currentUser.username}}</div>
+        <i (click)="openUserSettings()" class="fa fa-cog" aria-hidden="true"></i>
+    </div>
 </div>
+
+<app-server-display class="display-server" *ngIf="displayServer" (updateServer)="updateServer($event)" [server]="displayServer" [owner]="isOwner()"></app-server-display>
 
 <!-- Forms -->
 
@@ -41,3 +47,9 @@
         </div>
     </form>
 </div>
+
+<!-- Settings -->
+
+<ng-container [ngSwitch]="currentSetting">
+    <app-settings *ngSwitchCase="settingsType.user" (closeSettings)="closeSettings($event)" [user]="currentUser"></app-settings>
+</ng-container>

@@ -80,6 +80,7 @@
     height: 100px;
     width: 100px;
     border-radius: 50px;
+    overflow: hidden;
 }
 
 .outsideLogo {
@@ -391,6 +392,7 @@
 
 .bottom {
     padding-bottom: 15px;
+    border-bottom: 1px solid #8e92976c;
 }
 
 .firstUser {

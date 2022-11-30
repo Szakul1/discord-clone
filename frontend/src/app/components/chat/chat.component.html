@@ -9,7 +9,7 @@
                     <div class="date" *ngIf="message.edited">(edited)</div>
                 </div>
                 <div *ngIf="messageToEdit !== message" class="text">{{message.message}}</div>
-                <div class="input" *ngIf="messageToEdit === message" style="margin-right: 10px;">
+                <div class="input" *ngIf="messageToEdit == message" style="margin-right: 10px;">
                     <textarea
                     #messageEdit rows="1" maxlength="400" value="{{message.message}}"
                     oninput='this.style.height = this.scrollHeight + "px"'
@@ -21,7 +21,7 @@
                 </div>
                 <div class="cancelMessage" *ngIf="messageToEdit == message">Press Esc to cancel</div>
             </div>
-            <div class="editMessage" *ngIf="message != messageToEdit">
+            <div class="editMessage" *ngIf="message != messageToEdit && message.author === currentUser!.username">
                 <i class="fa fa-pencil" (click)="prepareEdition(message)" aria-hidden="true"></i>
                 <i class="fa fa-trash" (click)="prepareDeletion(message)" aria-hidden="true"></i>
             </div>
@@ -56,6 +56,6 @@
     </div>
     <div class="confirmationButtons">
         <button class="cancelButton" type="button" (click)="messageToDelete=undefined">Cancel</button>
-        <button class="deleteButton" (click)="deleteMessage()" type="submit">Delete server</button>
+        <button class="deleteButton" (click)="deleteMessage()" type="submit">Delete message</button>
     </div>
 </div>
