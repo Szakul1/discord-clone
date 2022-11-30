@@ -31,19 +31,17 @@ public class MessageService {
     private final MessageMapper messageMapper;
 
     public List<MessageDto> getMessages(Long textChannelId, Integer page) {
-        serverService.authorizeUser(textChannelId);
-        page = (int) Math.ceil(messageRepository.countMessages(textChannelId) / 10.0) - 1 - page;
-        if (page < 0)
-            return List.of();
-        return messageRepository.getChannelMessages(textChannelId,
-                         PageRequest.of(page, 10)).stream()
+        serverService.authorizeUser(serverService.getServerByChannelId(textChannelId));
+        List<MessageDto> messages = messageRepository.getChannelMessagesReverse(textChannelId, PageRequest.of(page, 10)).stream()
                 .map(messageMapper::toDto)
                 .collect(Collectors.toList());
+        Collections.reverse(messages);
+        return messages;
     }
 
     @Transactional
     public MessageDto create(Long textChannelId, String text,  Principal principal) {
-        serverService.authorizeUser(textChannelId, principal.getName());
+        serverService.authorizeUser(serverService.getServerByChannelId(textChannelId), principal.getName());
         DiscordUser author = discordUserService.getUser(principal.getName());
 
         TextChannel textChannel = textChannelRepository.findById(textChannelId)
@@ -62,7 +60,7 @@ public class MessageService {
     }
 
     public MessageDto update(Long textChannelId, MessageDto messageDto, Principal principal) {
-        serverService.authorizeUser(textChannelId, principal.getName());
+        serverService.authorizeUser(serverService.getServerByChannelId(textChannelId), principal.getName());
 
         Message message = checkAuthor(messageDto.getId(), principal.getName());
 
@@ -72,7 +70,7 @@ public class MessageService {
     }
 
     public Long delete(Long textChannelId, Long messageId, Principal principal) {
-        serverService.authorizeUser(textChannelId, principal.getName());
+        serverService.authorizeUser(serverService.getServerByChannelId(textChannelId), principal.getName());
         Message message = checkAuthor(messageId, principal.getName());
         messageRepository.delete(message);
         return messageId;
@@ -91,11 +89,13 @@ public class MessageService {
 
     @Deprecated
     private List<MessageDto> getMessagesAlternative(Long textChannelId, Integer page) {
-        List<MessageDto> messages = messageRepository.getChannelMessagesReverse(textChannelId, PageRequest.of(page, 10)).stream()
+        page = (int) Math.ceil(messageRepository.countMessages(textChannelId) / 10.0) - 1 - page;
+        if (page < 0)
+            return List.of();
+        return messageRepository.getChannelMessages(textChannelId,
+                        PageRequest.of(page, 10)).stream()
                 .map(messageMapper::toDto)
                 .collect(Collectors.toList());
-        Collections.reverse(messages);
-        return messages;
     }
 
 }

@@ -37,9 +37,9 @@ public class TextChannelService {
                 .collect(Collectors.toList());
     }
 
-    public TextChannelDto create(@PathVariable Long serverId, @RequestBody TextChannelDto textChannelDto) {
+    public TextChannelDto create(Long serverId, TextChannelDto textChannelDto) {
         Server server = serverService.getServer(serverId);
-        serverService.authorizeUser(server);
+        serverService.isOwner(server);
 
         TextChannel textChannel = TextChannel.builder()
                 .name(textChannelDto.getName().trim())
@@ -50,7 +50,8 @@ public class TextChannelService {
     }
 
     public TextChannelDto update(Long textChannelId, TextChannelDto textChannelDto) {
-        serverService.authorizeUser(textChannelId);
+        serverService.isOwner(serverService.getServerByChannelId(textChannelId));
+
         TextChannel textChannel = textChannelRepository.findById(textChannelId)
                 .orElseThrow(() -> new DiscordException("TextChannel with id: " + textChannelId + " not found"));
         textChannel.setName(textChannelDto.getName().trim());
@@ -58,7 +59,7 @@ public class TextChannelService {
     }
 
     public void delete(Long textChannelId) {
-        serverService.authorizeUser(textChannelId);
+        serverService.isOwner(serverService.getServerByChannelId(textChannelId));
         textChannelRepository.deleteById(textChannelId);
     }
 

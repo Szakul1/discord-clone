@@ -32,7 +32,7 @@ public class FileService {
         String filename = image.getOriginalFilename();
         if (filename == null)
             return;
-        String extension = filename.substring(filename.lastIndexOf("."));
+        String extension = filename.substring(filename.lastIndexOf(".") + 1);
         if (ACCEPTED_IMAGE_EXTENSIONS.stream().noneMatch(e -> e.equals(extension))) {
             throw new DiscordException("File extension not accepted");
         }

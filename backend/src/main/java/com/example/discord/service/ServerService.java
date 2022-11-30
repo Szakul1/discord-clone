@@ -82,14 +82,15 @@ public class ServerService {
     }
 
     public void delete(Long id) {
-        checkMember(id);
+        Server server = getServer(id);
+        isOwner(server);
         serverRepository.deleteById(id);
     }
 
     public ServerDto update(Long id, MultipartFile logo, ServerDto serverDto) throws Exception {
         Server server = serverRepository.findById(id)
                 .orElseThrow(() -> new DiscordException("Server with id: " + id + " not found"));
-        authorizeUser(server);
+        isOwner(server);
 
         server.setName(serverDto.getName().trim());
         if (logo != null) {
@@ -120,9 +121,7 @@ public class ServerService {
 
     public void banUser(Long serverId, Long userId) {
         Server server = getServer(serverId);
-        if (!userService.getUsername().equals(server.getOwner().getUsername())) {
-            throw new DiscordException("User is not server owner");
-        }
+        isOwner(server);
 
         DiscordUser discordUser = discordUserRepository.findById(userId)
                 .orElseThrow(() -> new DiscordException("User with id: " + userId + " not found"));
@@ -136,6 +135,7 @@ public class ServerService {
     }
 
     private String getLocation(MultipartFile logo, ServerDto server) throws Exception {
+        fileService.checkImageExtension(logo);
         String filename = server.getName() + System.currentTimeMillis();
         fileService.uploadLogo(filename, logo);
         return filename;
@@ -146,20 +146,12 @@ public class ServerService {
                 .orElseThrow(() -> new DiscordException("Server with id: " + serverId + " not found"));
     }
 
-    public void authorizeUser(Long textChannelId) {
-        authorizeUser(textChannelId, userService.getUsername());
-    }
-
-    public void authorizeUser(Long textChannelId, String username) {
-        Server server = serverRepository.findByTextChannelsId(textChannelId)
-                .orElseThrow(() -> new DiscordException("Server not found"));
-
-        authorizeUser(server, username);
-    }
-
     public void authorizeUser(Server server) {
         String username = userService.getUsername();
-        authorizeUser(server, username);
+
+        if (!serverRepository.existsByIdAndDiscordUsersUsername(server.getId(), username)) {
+            throw new UsernameNotFoundException("User: " + username + " not authorized");
+        }
     }
 
     public void authorizeUser(Server server, String username) {
@@ -168,10 +160,14 @@ public class ServerService {
         }
     }
 
-    private void checkMember(Long serverId) {
-        String username = userService.getUsername();
-        if (!serverRepository.existsByIdAndDiscordUsersUsername(serverId, username)) {
-            throw new UsernameNotFoundException("User: " + username + " not authorized");
+    public Server getServerByChannelId(Long textChannelId) {
+        return serverRepository.findByTextChannelsId(textChannelId)
+                .orElseThrow(() -> new DiscordException("Server not found"));
+    }
+
+    public void isOwner(Server server) {
+        if (!userService.getUsername().equals(server.getOwner().getUsername())) {
+            throw new DiscordException("User is not server owner");
         }
     }
 
@@ -179,4 +175,5 @@ public class ServerService {
         return serverRepository.findByInviteToken(token)
                 .orElseThrow(() -> new DiscordException("Server with token: " + token + " not found"));
     }
+
 }

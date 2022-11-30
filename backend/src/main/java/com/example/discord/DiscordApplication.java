@@ -1,5 +1,6 @@
 package com.example.discord;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,9 @@ import java.util.List;
 @SpringBootApplication
 public class DiscordApplication {
 
+    @Value("${frontend-url}")
+    private String frontendUrl;
+
     public static void main(String[] args) {
         SpringApplication.run(DiscordApplication.class, args);
 
@@ -22,7 +26,7 @@ public class DiscordApplication {
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
+        corsConfiguration.setAllowedOrigins(List.of(frontendUrl));
         corsConfiguration.setAllowedHeaders(List.of("Origin", "Access-Control-Allow-Origin", "Content-Type",
                 "Accept", "Authorization", "Origin, Accept", "X-Requested-With",
                 "Access-Control-Request-Method", "Access-Control-Request-Headers"));

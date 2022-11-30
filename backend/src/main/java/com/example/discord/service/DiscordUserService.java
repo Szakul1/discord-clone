@@ -132,7 +132,6 @@ public class DiscordUserService {
     }
 
     public DiscordUserDto uploadAvatar(MultipartFile avatar) throws Exception {
-        fileService.checkImageExtension(avatar);
         DiscordUser currentUser = userService.getCurrentUser();
 
         String location = currentUser.getAvatarLocation();
@@ -169,6 +168,7 @@ public class DiscordUserService {
     }
 
     private String getLocation(MultipartFile avatar, DiscordUser discordUser) throws Exception {
+        fileService.checkImageExtension(avatar);
         String filename = discordUser.getUsername() + System.currentTimeMillis();
         fileService.uploadAvatar(filename, avatar);
         return filename;

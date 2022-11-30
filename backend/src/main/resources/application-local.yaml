@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:file:./testdb
     username: root
     password: root
     driver-class-name: org.h2.Driver
@@ -14,3 +14,6 @@ spring:
     console:
       enabled: true
       path: /console
+  sql:
+    init:
+      mode: never

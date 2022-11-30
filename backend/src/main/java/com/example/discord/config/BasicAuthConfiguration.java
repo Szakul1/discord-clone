@@ -17,7 +17,8 @@ public class BasicAuthConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
                 .and()
-                .csrf().disable().authorizeRequests()
+                .csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/auth", "/user/register", "/user/confirm", "/user/resend", "/chat/**")
                 .permitAll()
                 .anyRequest().authenticated()
