@@ -14,9 +14,12 @@ spring:
     init:
       mode: never
 
+  mail:
+    password: ${EMAIL_PASSWORD}
+
 minio:
-  user: admin
-  password: admin1234
-  url: http://localhost:9000
+  user: ${MINIO_USER}
+  password: ${MINIO_PASSWORD}
+  url: ${MINIO_URL}
 
 frontend-url: "https://frontend-production-47b5.up.railway.app"
