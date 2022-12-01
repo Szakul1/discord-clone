@@ -3,7 +3,7 @@ name: Frontend CI/CD
 on:
   push:
     paths: [ "frontend/**" ]
-    
+
 defaults:
   run:
     working-directory: frontend
@@ -12,26 +12,26 @@ jobs:
   CI:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up node
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18.x
-        cache: npm
-    - name: Build and test
-    - run: npm ci
-    - run: npm run build
-    - run: npm test
-    
+      - uses: actions/checkout@v3
+      - name: Set up node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: npm
+      - name: Build and test
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+
   CD:
     needs: CI
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
-    - uses: actions/checkout@v3
-    - name: Install Railway
-      run: npm i -g @railway/cli
-    - name: Deploy
-      run: railway up --service=frontend -d
-      env:
-        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - uses: actions/checkout@v3
+      - name: Install Railway
+        run: npm i -g @railway/cli
+      - name: Deploy
+        run: railway up --service=frontend -d
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
