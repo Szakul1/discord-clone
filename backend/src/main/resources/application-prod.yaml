@@ -14,12 +14,9 @@ spring:
     init:
       mode: never
 
-  config:
-    import: optional:secrets.yaml
-
 minio:
   user: admin
   password: admin1234
   url: http://localhost:9000
 
-frontend-url: "http://localhost:4200"
+frontend-url: "https://frontend-production-47b5.up.railway.app"

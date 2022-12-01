@@ -26,6 +26,7 @@ public class BasicAuthConfiguration extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
+    @Profile("local")
     @Override
     public void configure(WebSecurity web) throws Exception {
         web

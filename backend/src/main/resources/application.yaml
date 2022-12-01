@@ -1,13 +1,6 @@
 server:
   port: 6060
 
-minio:
-  user: admin
-  password: admin1234
-  url: http://localhost:9000
-
-frontend-url: "https://frontend-production-47b5.up.railway.app"
-
 spring:
   mail:
     host: smtp.gmail.com
@@ -21,5 +14,3 @@ spring:
             enable: true
           ssl:
             trust: smtp.gmail.com
-  config:
-    import: optional:secrets.yaml
