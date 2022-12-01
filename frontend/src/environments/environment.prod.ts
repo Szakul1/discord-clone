@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  baseUrl: 'http://localhost:6060',
-  url: 'http://localhost:4200'
+  baseUrl: 'https://backend-production-f7ce.up.railway.app',
+  url: 'https://frontend-production-47b5.up.railway.app'
 };
