@@ -22,4 +22,4 @@ minio:
   password: ${MINIO_PASSWORD}
   url: ${MINIO_URL}
 
-frontend-url: "https://frontend-production-47b5.up.railway.app"
+frontend-url: "https://frontend-production-ac53.up.railway.app"
