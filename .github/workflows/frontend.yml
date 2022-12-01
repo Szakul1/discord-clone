@@ -2,13 +2,14 @@ name: Frontend CI/CD
 
 on:
   push:
-    paths: [ "frontend/**" ]
+#     paths: [ "frontend/**" ]
 
 defaults:
   run:
     working-directory: frontend
 
 jobs:
+
   CI:
     runs-on: ubuntu-latest
     steps:
@@ -18,10 +19,12 @@ jobs:
         with:
           node-version: 18.x
           cache: npm
-      - name: Build and test
-      - run: npm ci
-      - run: npm run build
-      - run: npm test
+      - name: Install 
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Run
+        run: npm test
 
   CD:
     needs: CI
