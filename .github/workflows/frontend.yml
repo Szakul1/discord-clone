@@ -24,8 +24,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      - name: Run
-        run: npm test
 
   CD:
     needs: CI
