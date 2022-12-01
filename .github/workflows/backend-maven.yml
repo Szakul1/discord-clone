@@ -2,7 +2,7 @@ name: Backend CI/CD
 
 on:
   push:
-#     paths: [ "backend/**" ]
+    paths: [ "backend/**" ]
 
 jobs:
 
@@ -30,7 +30,7 @@ jobs:
       run: npm i -g @railway/cli
     - name: Deploy
       run: railway up --service=backend -d
-#       working-directory: backend
+      working-directory: backend
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     
