@@ -1,18 +1,13 @@
-name: Java CI with Maven
+name: Backend CI/CD
 
 on:
   push:
-    branches: [ "main" ]
-    paths: [ "backend/**" ]
-  pull_request:
-    branches: [ "main" ]
     paths: [ "backend/**" ]
 
 jobs:
-  build:
 
+  CI:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -24,3 +19,16 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
       working-directory: backend
+  
+  CD:
+    needs: CI
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: Install Railway
+      run: npm i -g @railway/cli
+    - name: Deploy
+      run: railway up
+      env:
+        RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    
