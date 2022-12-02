@@ -1,15 +1,18 @@
 # Discord clone 1.0 (Spring boot + Angular)
-Application created as discord clone with spring boot and angular. So far implemented features like login and registration, creating, updating and deleting
+Application created as discord clone with spring boot and angular.
+So far implemented features like login and registration, creating, updating and deleting
 servers and text channels, live chat
 and user settings.
+
+Hosted at <a href="https://frontend-production-ac53.up.railway.app">Railway</a> so you can test it.
 
 #### Table of Contents
 1. [Features](#Features)
     1. [Login and registration](#1-login-and-registration)
     2. [Server](#2-server)
-    3. [Text channel](#2-Text-channel)
-    4. [Messages](#3-Messages)
-    5. [Users](#4-Users)
+    3. [Text channel](#2-text-channel)
+    4. [Messages](#3-messages)
+    5. [Users](#4-users)
 2. [Functionalities and technologies](#Functionalities-and-technologies)
 
 ---
@@ -84,6 +87,8 @@ and authorized if needed.
 
 Mino was used to store files (currently only images). Images are being compressed to lower transmission data. Location to image is stored in mysql database.
 
+CI and CD is implemented by github actions separately for frontend and backend with automatic deploy to railway by railway cli.
+ 
 -----
 
 Frontend is created with angular framework.
