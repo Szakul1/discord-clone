@@ -2,10 +2,20 @@ package com.example.discord.service;
 
 import com.example.discord.exception.DiscordException;
 import io.minio.GetObjectArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
+import io.minio.errors.ErrorResponseException;
+import io.minio.errors.InsufficientDataException;
+import io.minio.errors.InternalException;
+import io.minio.errors.InvalidResponseException;
+import io.minio.errors.ServerException;
+import io.minio.errors.XmlParserException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +23,9 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -105,4 +118,19 @@ public class FileService {
         ImageIO.write(resizedImage, "png", baos);
         return baos.toByteArray();
     }
+
+    @EventListener(ContextRefreshedEvent.class)
+    public void initStructure() throws Exception {
+        minioClient.makeBucket(MakeBucketArgs.builder()
+                .bucket(BUCKET)
+                .build());
+
+        ClassPathResource avatar = new ClassPathResource("static/avatar1.png");
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket(BUCKET)
+                .object(AVATARS + DEFAULT_AVATAR_LOCATION)
+                .stream(avatar.getInputStream(), avatar.getFile().getTotalSpace(), -1)
+                .build());
+    }
+
 }
