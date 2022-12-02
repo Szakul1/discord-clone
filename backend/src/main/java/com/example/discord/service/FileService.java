@@ -119,7 +119,7 @@ public class FileService {
         return baos.toByteArray();
     }
 
-    @EventListener(ContextRefreshedEvent.class)
+
     public void initStructure() throws Exception {
         minioClient.makeBucket(MakeBucketArgs.builder()
                 .bucket(BUCKET)
