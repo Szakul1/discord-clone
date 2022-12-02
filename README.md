@@ -1,9 +1,10 @@
 # Discord clone 1.0 (Spring boot + Angular)
 Application created as discord clone with spring boot and angular.
-Hosted at <a href="https://frontend-production-ac53.up.railway.app">Railway</a> so you can test it.
 So far implemented features like login and registration, creating, updating and deleting
 servers and text channels, live chat
 and user settings.
+
+Hosted at <a href="https://frontend-production-ac53.up.railway.app">Railway</a> so you can test it.
 
 #### Table of Contents
 1. [Features](#Features)
